@@ -1,0 +1,185 @@
+﻿@model List<HotelAndTours.EntityLayer.Concrete.RoomNumbers>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/FrontendLayout.cshtml";
+    var AdultPrice = 0;
+    var ChildPrice = 0;
+    var TotalPrice = 0;
+    int QuantityTotal = ViewBag.qtyInputAdult + ViewBag.qtyInputChild;
+}
+@*<style>
+	.hero_in.hotels_detail:before {
+		background: url(@Model.HotelDetails.HotelCoverImage) center center no-repeat;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+</style>*@
+<section class="hero_in hotels_detail">
+    <div class="wrapper">
+        <div class="container">
+            <h1 class="fadeInUp">
+                <span></span>Test
+            </h1>
+        </div>
+        <span class="magnific-gallery">
+            <a href="~/Frontend/html/img/gallery/hotel_list_1.jpg" class="btn_photos" title="Photo title" data-effect="mfp-zoom-in">View photos</a>
+            <a href="~/Frontend/html/img/gallery/hotel_list_2.jpg" title="Photo title" data-effect="mfp-zoom-in"></a>
+            <a href="~/Frontend/html/img/gallery/hotel_list_3.jpg" title="Photo title" data-effect="mfp-zoom-in"></a>
+        </span>
+    </div>
+</section>
+
+<!--/hero_in-->
+
+
+<div class="collapse" id="collapseMap">
+    <div id="map" class="map"></div>
+</div>
+<!-- End Map -->
+
+<div class="container margin_60_35">
+    <form action="/Frontend/AvailableRoomSearch" method="GET">
+
+        <div class="col-lg-12">
+            <div class="row g-0 custom-search-input-2 inner">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <select class="wide" id="hotelDropdown" name="hotelId" onchange="onHotelDropdownChange(this)">
+                            @foreach (var item in ViewBag.DropDownList)
+                            {
+                                <option value="@item.Value" @(int.Parse(item.Value) == ViewBag.HotelSearchId ? "selected" : "")>@item.Text</option>
+                            }
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <select class="wide" name="RoomId">
+
+                            <option disabled selected>Oda Seçiniz</option>
+                            <option value="0">Tümü</option>
+
+                            @foreach (var item in ViewBag.RoomsDropDownList)
+                            {
+                                <option value="@item.Value" @(int.Parse(item.Value) == ViewBag.RoomId ? "selected" : "")>@item.Text</option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+
+                    <div class="panel-dropdown">
+                        <a href="#">Misafirler <span class="qtyTotal">@QuantityTotal</span></a>
+                        <div class="panel-dropdown-content right">
+                            <div class="qtyButtons">
+                                <label>Yetişkin</label>
+                                <input type="text" name="qtyInputAdult" value="@ViewBag.qtyInputAdult">
+                            </div>
+                            <div class="qtyButtons">
+                                <label>Çocuk</label>
+                                <input type="text" name="qtyInputChild" value="@ViewBag.qtyInputChild">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group input-dates">
+                        <input class="form-control" type="text" id="datesInput" name="dates" value="@ViewBag.Dates" placeholder="Ne zaman.." readonly="">
+                        <i class="icon_calendar"></i>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <input type="submit" class="btn_search" value="Search">
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+    </form>
+    <!-- /custom-search-input-2 -->
+    <div class="isotope-wrapper">
+        @foreach (var item in Model.DistinctBy(x => x.Room))
+        {
+            <div class="box_list isotope-item latest">
+                <div class="row g-0">
+                    <div class="col-lg-5">
+                        <figure>
+                            <a href="hotel-detail.html">
+                                <img src="@item.Room.RoomCoverImage" class="img-fluid" alt="" width="800" height="533">
+                                <div class="read_more">
+                                    <span>@item.Room.Hotel.HotelName</span>
+                                </div>
+                            </a>
+                        </figure>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="wrapper">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="cat_star">
+                                        <i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <small style="padding-left:100%">@item.RoomName</small>
+                                </div>
+                            </div>
+                            <h3>
+                                <a href="/Frontend/Purchase/Index?hotelId=@item.Room.HotelId&RoomId=@item.RoomId&roomNumberId=@item.RoomNumberId&dates=@ViewBag.Dates&qtyInputAdult=@ViewBag.qtyInputAdult&qtyInputChild=@ViewBag.qtyInputChild">@item.Room.Title</a>
+                            </h3>
+                            <p>@item.Room.Description</p>
+                            @{
+                                AdultPrice = item.Room.PriceForNightAdult * ViewBag.qtyInputAdult * ViewBag.Days;
+                                ChildPrice = item.Room.PriceForNightChildren * ViewBag.qtyInputChild * ViewBag.Days;
+                                TotalPrice = AdultPrice + ChildPrice;
+                            }
+                            <span class="price"><strong>@TotalPrice</strong>TL</span>
+                        </div>
+                        <ul>
+                            <li><i class="ti-eye"></i> 164 views</li>
+                            <li>
+                                <div class="score">
+                                    <span>Superb<em>350 Reviews</em></span><strong>8.9</strong>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- /box_list -->
+
+
+    </div>
+    <!-- /isotope-wrapper -->
+
+    @*<p class="text-center add_top_60"><a href="#0" class="btn_1 rounded">Load more</a></p>*@
+
+</div>
+
+@section AvilableRooms {
+
+    <script>
+    function onHotelDropdownChange(selectElement) {
+        var selectedHotelId = selectElement.value;
+        var currentUrl = window.location.href;
+
+        // Remove any existing hotelSearchId parameter from the URL
+        var updatedUrl = currentUrl.replace(/([?&])hotelSearchId=[^&]+(&|$)/, '$1').replace(/[?&]$/, '');
+
+        // Check if the URL already contains query parameters
+        var separator = updatedUrl.includes('?') ? '&' : '?';
+
+        // Construct the updated URL with the hotelSearchId parameter
+        updatedUrl = updatedUrl + separator + 'hotelSearchId=' + selectedHotelId;
+
+        // Reload the page with the updated URL
+        window.location.href = updatedUrl;
+    }
+</script>
+}

@@ -1,0 +1,180 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@model HotelAndTours.ModelsLayer.Models.Booking.BookingCRUDViewModel
+
+<div class="fixed-action-btn">
+    <a href="#AddEdit" class="btn-floating btn-large modal-trigger red" id="addButton">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
+
+<div class="page-titles">
+    <div class="d-flex align-items-center">
+        <h5 class="font-medium m-b-0">Rezervasyonlar</h5>
+        <div class="custom-breadcrumb ml-auto">
+            <a href="/Admin/" class="breadcrumb">Anasayfa</a>
+            <a href="#!" class="breadcrumb">Rezervasyonlar</a>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <h5 class="card-title">Rezervasyonların Listesi</h5>
+                    <p></p>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+
+                                    <th>Adı</th>
+                                    <th>Oda Numarası</th>
+                                    <th>Giriş Tarihi</th>
+                                    <th>Çıkış Tarihi</th>
+                                    <th>Yetişkin Sayısı</th>
+                                    <th>Çocuk Sayısı</th>
+                                    <th>Mail Adresi</th>
+                                    <th>Telefon Numarası</th>
+                                    <th>Fatura Adresi</th>
+                                    <th>Ödenen Tutar</th>
+                                    <th>Durum</th>
+
+                                    <th style="width:20px;text-align:center"></th>
+                                    <th style="width:20px;text-align:center"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model._BookingViewModel)
+                                {
+
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.RoomNumber.RoomName</td>
+                                        <td>@item.CheckIn.ToShortDateString()</td>
+                                        <td>@item.CheckOut.ToShortDateString()</td>
+                                        <td>@item.AdultCount</td>
+                                        <td>@item.ChildCount</td>
+                                        <td>@item.Mail</td>
+                                        <td>@item.PhoneNumber</td>
+                                        <td>@item.BillingAddress</td>
+                                        <td>@item.PaidPrice</td>
+                                        <td>@item.Status</td>
+                                        <td>
+                                            <a href="/Admin/Booking?editId=@item.BookingId" class="waves-effect waves-light btn-small green"><i class="material-icons">edit</i></a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/Booking/BookingDelete/@item.BookingId" class="waves-effect waves-light btn-small delete" style="background-color:#E06B55"><i class="material-icons">delete</i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="AddEdit" class="modal modal-fixed-footer" data-keyboard="false" data-backdrop="static">
+    <form asp-action="BookingAddEdit" id="Add_Form">
+        <div class="modal-content">
+            <input hidden id="Id" length="120" asp-for="@Model._BookingAddViewModel.BookingId" name="BookingId">
+        
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="Name" type="text" asp-for="@Model._BookingAddViewModel.Name" name="Name">
+                    <label for="Name">Ad-Soyad</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="HotelId" class="form-control" asp-for="@Model._BookingAddViewModel.RoomNumberId" name="RoomNumberId">
+                        @foreach (var item in ViewBag.DropDownList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>         
+                    <label for="RoomId">Oda Numarası</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.RoomNumberId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="CheckIn" type="date" asp-for="@Model._BookingAddViewModel.CheckIn" name="CheckIn" placeholder="Giriş">
+                    <label for="CheckIn">Giriş Tarihi</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.CheckIn" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="CheckOut" type="date" asp-for="@Model._BookingAddViewModel.CheckOut" name="CheckOut" placeholder="Çıkış">
+                    <label for="CheckOut">Çıkış Tarihi</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.CheckOut" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="AdultCount" type="number" asp-for="@Model._BookingAddViewModel.AdultCount" name="AdultCount">
+                    <label for="AdultCount">Yetişkin Sayısı</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.AdultCount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="ChildCount" type="number" asp-for="@Model._BookingAddViewModel.ChildCount" name="ChildCount">
+                    <label for="ChildCount">Çocuk Sayısı</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.ChildCount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="Mail" type="email" asp-for="@Model._BookingAddViewModel.Mail" name="Mail">
+                    <label for="Mail">Mail</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.Mail" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="PhoneNumber" type="text" asp-for="@Model._BookingAddViewModel.PhoneNumber" name="PhoneNumber">
+                    <label for="PhoneNumber">Telefon Numarası</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="BillingAddress" type="text" asp-for="@Model._BookingAddViewModel.BillingAddress" name="BillingAddress">
+                    <label for="BillingAddress">Fatura Adresi</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.BillingAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="Status" type="text" asp-for="@Model._BookingAddViewModel.Status" name="Status">
+                    <label for="Status">Durum</label>
+                    <span asp-validation-for="@Model._BookingAddViewModel.Status" class="text-danger"></span>
+                </div>
+            </div>
+            <div asp-validation-summary="ModelOnly">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn green waves-effect waves-green ">
+                Gönder
+            </button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn red ">Kapat</a>
+        </div>
+    </form>
+
+</div>

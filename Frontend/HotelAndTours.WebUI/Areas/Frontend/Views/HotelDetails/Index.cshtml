@@ -1,0 +1,449 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/FrontendLayout.cshtml";
+}
+@model HotelAndTours.ModelsLayer.Models.Hotel.HotelDetailsViewModel
+<style>
+    .hero_in.hotels_detail:before {
+        background: url(@Model.HotelDetails.HotelCoverImage) center center no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+
+    .horizontal {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Distribute items evenly */
+        align-items: center; /* Center items vertically within each row */
+    }
+
+        .horizontal li {
+            margin-right: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+
+
+</style>
+<section class="hero_in hotels_detail">
+    <div class="wrapper">
+        <div class="container">
+            <h1 class="fadeInUp">
+                <span></span>@Model.HotelDetails.HotelName
+            </h1>
+        </div>
+        <span class="magnific-gallery">
+            <a href="~/Frontend/html/img/gallery/hotel_list_1.jpg" class="btn_photos" title="Photo title" data-effect="mfp-zoom-in">View photos</a>
+            <a href="~/Frontend/html/img/gallery/hotel_list_2.jpg" title="Photo title" data-effect="mfp-zoom-in"></a>
+            <a href="~/Frontend/html/img/gallery/hotel_list_3.jpg" title="Photo title" data-effect="mfp-zoom-in"></a>
+        </span>
+    </div>
+</section>
+<!--/hero_in-->
+
+<div class="bg_color_1">
+<nav class="secondary_nav sticky_horizontal">
+    <div class="container">
+        <ul class="clearfix">
+            <li>
+                <a href="#description" class="active">Açıklama</a>
+            </li>
+            <li>
+                <a href="#reviews">Yorumlar</a>
+            </li>
+            <li>
+                <a href="#sidebar">Booking</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container margin_60_35">
+<div class="row">
+<div class="col-lg-8">
+<section id="description">
+    @Model.HotelDetails.Description
+    <hr/>
+    <p> Otelin Özellikleri:</p>
+    <!-- /row -->
+    <div class="row">
+        @{
+            var dataList = Model.HotelDetails.HotelSpecs.Split(','); // Replace with your actual data list
+            var groupSize = 4; // Number of items in each group
+            var numGroups = (int)Math.Ceiling((double)dataList.Length / groupSize); // Calculate the number of groups
+
+            for (var i = 0; i < numGroups; i++)
+            {
+                <div class="col-lg-6">
+                    <ul class="bullets">
+                        @for (var j = i * groupSize; j < Math.Min((i + 1) * groupSize, dataList.Length); j++)
+                        {
+                            <li>@dataList[j]</li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    </div>
+    <hr/>
+    <p> Otelin Kategorileri:</p>
+    <div class="row">
+        @{
+            var dataList2 = Model.HotelDetails.HotelCategories; // Replace with your actual data list
+            var groupSize2 = 4; // Number of items in each group
+            var numGroups2 = (int)Math.Ceiling((double)dataList2.Count / groupSize2); // Calculate the number of groups
+
+            for (var i = 0; i < numGroups2; i++)
+            {
+                <div class="col-lg-6">
+                    <ul class="bullets">
+                        @for (var j = i * groupSize2; j < Math.Min((i + 1) * groupSize2, dataList2.Count); j++)
+                        {
+                            var hotelCategory = dataList2.ElementAt(j);
+                            var hotelCategoryName = hotelCategory.HotelCategory.HotelCategoryName;
+                            <li>@hotelCategoryName</li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    </div>
+
+
+    <hr>
+
+    <h3>Pictures from our users</h3>
+    <div class="pictures_grid magnific-gallery clearfix">
+        <figure>
+            <a href="~/Frontend/html/img/detail_gallery/detail_1.jpg" title="Photo title" data-effect="mfp-zoom-in">
+                <img src="~/Frontend/html/img/detail_gallery/detail_1.jpg" alt="">
+            </a>
+        </figure>
+        <figure>
+            <a href="~/Frontend/html/img/detail_gallery/detail_2.jpg" title="Photo title" data-effect="mfp-zoom-in">
+                <img src="~/Frontend/html/img/detail_gallery/detail_2.jpg" alt="">
+            </a>
+        </figure>
+        <figure>
+            <a href="~/Frontend/html/img/detail_gallery/detail_3.jpg" title="Photo title" data-effect="mfp-zoom-in">
+                <img src="~/Frontend/html/img/detail_gallery/detail_3.jpg" alt="">
+            </a>
+        </figure>
+        <figure>
+            <a href="~/Frontend/html/img/detail_gallery/detail_4.jpg" title="Photo title" data-effect="mfp-zoom-in">
+                <img src="~/Frontend/html/img/detail_gallery/detail_4.jpg" alt="">
+            </a>
+        </figure>
+        <figure>
+            <a href="~/Frontend/html/img/detail_gallery/detail_5.jpg" title="Photo title" data-effect="mfp-zoom-in">
+                <span class="d-flex align-items-center justify-content-center">+10</span><img src="~/Frontend/html/img/detail_gallery/detail_5.jpg" alt="">
+            </a>
+        </figure>
+    </div>
+    <!-- /pictures -->
+    <hr>
+    @foreach (var roomGroup in Model.RoomGroups)
+    {
+        @foreach (var room in roomGroup)
+        {
+            <div class="room_type first">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="@room.RoomCoverImage" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-md-8">
+                        <h4>@room.Title</h4>
+                        <small>Yetişkin Fiyat: @room.PriceForNightAdult</small><br/>
+                        <small>Çocuk Fiyat: @room.PriceForNightChildren</small><br/>
+                        <p>@room.Description</p>
+
+                        <ul class="hotel_facilities">
+                            @foreach (var spec in room.RoomSpecs)
+                            {
+                                <li>
+                                    <i class="material-icons">@spec.RoomSpecs.Icon</i>
+                                    @spec.RoomSpecs.RoomSpec
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+        }
+    }
+    <!-- /rom_type -->
+    <hr>
+    <h3>Location</h3>
+    <div id="map" class="map map_single add_bottom_30">
+    </div>
+    <!-- End Map -->
+</section>
+<!-- /section -->
+<section id="reviews">
+    <h2>Yorumlar</h2>
+    <div class="reviews-container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div id="review_summary">
+                    <strong>@Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x=>x.Star).Average().ToString("0.0")</strong>
+                    <em>   @if (Model.HotelDetails.HotelComments.Any())
+                           {
+                                            if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 2.9)
+                               {
+                                   <p style="all:unset;">Kötü</p>
+                               }
+                                            else if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 3.9)
+                               {
+                                   <p style="all:unset;">Normal</p>
+                               }
+                                            else if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 4.5)
+                               {
+                                   <p style="all:unset;">İyi</p>
+                               }
+                                            else if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 5)
+                               {
+                                   <p style="all:unset;">Çok İyi</p>
+                               }
+                               else
+                               {
+                                   <p style="all:unset;">-</p>
+
+                               }
+                           }</em>
+                                    <small>@Model.HotelDetails.HotelComments.Where(x=>x.Status).Count() yorum sayısına göre</small>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                                @foreach (var comment in Model.HotelDetails.HotelComments.Where(x => x.Status).DistinctBy(x => x.Star))
+                {
+                    <div class="row">
+                        <div class="col-lg-10 col-9">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: @(CalculateProgress(comment.Star))%" aria-valuenow="@(comment.Star)" aria-valuemin="0" aria-valuemax="5"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-3">
+                            <small>
+                                <strong>@(comment.Star) stars</strong>
+                            </small>
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+        </div>
+        <!-- /row -->
+    </div>
+
+    <hr>
+
+    <div class="reviews-container">
+        @foreach (var item in Model.HotelDetails.HotelComments.Where(x=>x.Status))
+        {
+            <div class="review-box clearfix">
+                <figure class="rev-thumb">
+                    <img src="~/Frontend/html/img/person.jpg" alt="">
+                </figure>
+                <div class="rev-content">
+                    <div class="rating">
+                       
+
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <i class="icon_star @(i < item.Star ? "voted" : "")"></i>
+                        }
+                    </div>
+                    <div class="rev-info">
+                        @item.Name – @item.CommentDate.ToShortDateString():
+                    </div>
+                    <div class="rev-text">
+                        <p>
+                            @item.Text
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <!-- /review-container -->
+</section>
+<!-- /section -->
+<hr>
+
+<div class="add-review">
+    <h5>Leave a Review</h5>
+    <form>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>Name and Lastname *</label>
+                <input type="text" name="name_review" id="name_review" placeholder="" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Email *</label>
+                <input type="email" name="email_review" id="email_review" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Rating </label>
+                <div class="custom-select-form">
+                    <select name="rating_review" id="rating_review" class="wide">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label>Your Review</label>
+                <textarea name="review_text" id="review_text" class="form-control" style="height:130px;"></textarea>
+            </div>
+            <div class="form-group col-md-12 add_top_20">
+                <input type="submit" value="Submit" class="btn_1" id="submit-review">
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+<!-- /col -->
+
+<aside class="col-lg-4" id="sidebar">
+    <div class="box_detail booking">
+        <div class="price">
+            @if (Model.HotelDetails.Rooms.OrderBy(x => x.PriceForNightAdult).FirstOrDefault()?.PriceForNightAdult != null)
+            {
+                <span>@(Model.HotelDetails.Rooms.OrderBy(x => x.PriceForNightAdult).FirstOrDefault()?.PriceForNightAdult)</span>
+                <small>başlayan fiyatlarla</small>
+            }
+            else
+            {
+                <small>Oda bulunamadı</small>
+            }
+
+            <div class="score">
+                <span>
+                @if (Model.HotelDetails.HotelComments.Any())
+                {
+                    if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 2.9)
+                    {
+                        <p style="all:unset;">Kötü</p>
+                    }
+                    else if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 3.9)
+                    {
+                        <p style="all:unset;">Normal</p>
+                    }
+                    else if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 4.5)
+                    {
+                        <p style="all:unset;">İyi</p>
+                    }
+                    else if (Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 5)
+                    {
+                        <p style="all:unset;">Çok İyi</p>
+                    }
+                    else
+                    {
+                        <p style="all:unset;">-</p>
+
+                    }
+                    }
+
+
+                                <em>@Model.HotelDetails.HotelComments.Where(x=>x.Status).Count() Değerlendirme</em>
+                </span><strong>@Model.HotelDetails.HotelComments.Where(x=>x.Status).Select(x=>x.Star).Average().ToString("0.0")</strong>
+            </div>
+        </div>
+        <form action="/Frontend/AvailableRoomSearch" method="GET">
+            <input type="hidden" name="hotelId" value="@Model.HotelDetails.HotelId"/>
+            <div class="form-group input-dates">
+                <input class="form-control" type="text" id="datesInput" name="dates" placeholder="Ne zaman.." readonly="">
+                <i class="icon_calendar"></i>
+            </div>
+
+            <div class="panel-dropdown">
+                <a href="#">Misafirler <span class="qtyTotal">1</span></a>
+                <div class="panel-dropdown-content right">
+                    <div class="qtyButtons">
+                        <label>Yetişkin</label>
+                        <input type="text" name="qtyInputAdult" value="1">
+                    </div>
+                    <div class="qtyButtons">
+                        <label>Çocuk</label>
+                        <input type="text" name="qtyInputChild" value="0">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group clearfix">
+                <div class="custom-select-form">
+                    <select class="wide" name="roomId">
+                        <option selected disabled="">Oda Türü</option>
+                        <option value="0">Tüm Odalar</option>
+
+                        @foreach (var roomGroup in Model.RoomGroups)
+                        {
+                            @foreach (var room in roomGroup)
+                            {
+                                <option value="@room.RoomId">@room.Title</option>
+                            }
+                        }
+
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="add_top_30 btn_1 full-width purchase">Oda Ara</button>
+        </form>
+
+        @*        <a href="wishlist.html" class="btn_1 full-width outline wishlist"><i class="icon_heart"></i> Add to wishlist</a>
+*@
+        <div class="text-center">
+            <small>No money charged in this step</small>
+        </div>
+    </div>
+
+    <ul class="share-buttons">
+        <li>
+            <a class="fb-share" href="#0"><i class="social_facebook"></i> Share</a>
+        </li>
+        <li>
+            <a class="twitter-share" href="#0"><i class="social_twitter"></i> Tweet</a>
+        </li>
+        <li>
+            <a class="gplus-share" href="#0"><i class="social_googleplus"></i> Share</a>
+        </li>
+    </ul>
+</aside>
+</div>
+<!-- /row -->
+</div>
+<!-- /container -->
+</div>
+<!-- /bg_color_1 -->
+
+
+@section HotelDetails {
+    @functions {
+        public int CalculateProgress(int? rating)
+        {
+            if (rating.HasValue)
+            {
+            return (int)((double)Model.HotelDetails.HotelComments.Where(x => x.Star == rating.Value).Count() / Model.HotelDetails.HotelComments.Count() * 100);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
+
+}

@@ -1,0 +1,249 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/FrontendLayout.cshtml";
+}
+
+@model HotelAndTours.ModelsLayer.Models.Purchase.BookingDetailsViewModel
+<div class="hero_in cart_section">
+    <div class="wrapper">
+        <div class="container">
+            <div class="bs-wizard clearfix">
+                <div class="bs-wizard-step">
+                    <div class="text-center bs-wizard-stepnum">Otel Seçiniz</div>
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <a href="#" class="bs-wizard-dot"></a>
+                </div>
+
+                <div class="bs-wizard-step active">
+                    <div class="text-center bs-wizard-stepnum">Ödeme</div>
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <a href="#0" class="bs-wizard-dot"></a>
+                </div>
+
+                <div class="bs-wizard-step disabled">
+                    <div class="text-center bs-wizard-stepnum">Tatilinizin tadını çıkarın!</div>
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <a href="#0" class="bs-wizard-dot"></a>
+                </div>
+            </div>
+            <!-- End bs-wizard -->
+        </div>
+    </div>
+</div>
+<!--/hero_in-->
+
+<div class="bg_color_1">
+
+<div class="container margin_60_35">
+<form asp-area="Frontend" asp-controller="Purchase" asp-action="Index" id="Add_Form" method="POST">
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="box_cart">
+                <div class="message">
+                    <p>Üye misiniz? <a href="#0">Giriş yapın</a></p>
+                </div>
+                <div class="form_title">
+                    <h3><strong>1</strong>Bilgileriniz</h3>
+                    <p>
+                        Size ait bilgileri eksiksiz doldurunuz
+                    </p>
+                </div>
+                <div class="step">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Ad-Soyad</label>
+                                <input type="text" class="form-control" id="firstname_booking" name="Name">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>E-Posta</label>
+                                        <input type="email" id="email_booking" name="Mail" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Telefon Numarası</label>
+                                        <input type="text" id="telephone_booking" name="PhoneNumber" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+                <!--End step -->
+
+                <div class="form_title">
+                    <h3><strong>2</strong>Ödeme Bilgileri</h3>
+                    <p>
+                        Kart bilgilerinizi doldurunuz
+                    </p>
+                </div>
+                <div class="step">
+                    <div class="form-group">
+                        <label>Kart üstündeki isim</label>
+                        <input type="text" class="form-control" id="name_card_bookign" name="name_card_bookign">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Kart numarası</label>
+                                <input type="text" id="card_number" name="card_number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <img src="~/Frontend/html/img/cards_all.svg" alt="Cards" class="cards-payment">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Son kullanma tarihi</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" id="expire_month" name="expire_month" class="form-control" placeholder="MM">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" id="expire_year" name="expire_year" class="form-control" placeholder="Year">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>CCV</label>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <input type="text" id="ccv" name="ccv" class="form-control" placeholder="CCV">
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <img src="~/Frontend/html/img/icon_ccv.gif" width="50" height="29" alt="ccv"><small>Son 3 numara</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End row -->
+
+                    <hr>
+
+                    <h4>Or checkout with Paypal</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, vim id accusata sensibus, id ridens quaeque qui. Ne qui vocent ornatus molestie, reque fierent dissentiunt mel ea.
+                    </p>
+                    <p>
+                        <a href="#0">
+                            <img src="~/Frontend/html/img/paypal_bt.png" alt="Image">
+                        </a>
+                    </p>
+                </div>
+                <hr>
+                <!--End step -->
+
+                <div class="form_title">
+                    <h3><strong>3</strong>Fatura Adresi</h3>
+                    <p>
+                        Bilgileri eksiksiz doldurunuz
+                    </p>
+                </div>
+                <div class="step">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Açık Adres 1</label>
+                                <input type="text" id="street_1" name="street_1" class="form-control">
+                            </div>
+                        </div>
+                      
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Şehir</label>
+                                <div class="custom-select-form">
+                                    <select class="wide add_bottom_15" name="city" id="citySelect">
+                                        @foreach (var item in ViewBag.CapitalCities)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label>İlçe</label>
+                                <input type="text" id="district" name="district" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="form-group">
+                                <label>Posta Kodu</label>
+                                <input type="text" id="postal_code" name="postal_code" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <!--End row -->
+                </div>
+                <hr>
+                <!--End step -->
+                <div id="policy">
+                    <h5>Cancellation policy</h5>
+                    <p class="nomargin">Lorem ipsum dolor sit amet, vix <a href="#0">cu justo blandit deleniti</a>, discere omittantur consectetuer per eu. Percipit repudiare similique ad sed, vix ad decore nullam ornatus.</p>
+                </div>
+            </div>
+        </div>
+        <!-- /col -->
+
+        <aside class="col-lg-4" id="sidebar">
+            <div class="box_detail">
+                <div id="total_cart">
+                    Total <span class="float-end">@Model.Price</span>
+                </div>
+                <ul class="cart_details">
+                    <li>Başlangıç <span>@Model.CheckIn</span></li>
+                    <li>Bitiş<span>@Model.CheckOut</span></li>
+                    <li>Yetişkinler <span>@Model.Adults</span></li>
+                    <li>Çocuklar <span>@Model.Childs</span></li>
+                    <li>Otel Adı <span>@Model.RoomNumber.Room.Hotel.HotelName</span></li>
+                    <li>Oda Adı<span>@Model.RoomNumber.Room.Title</span></li>
+                    <li>Oda Numarası<span>@Model.RoomNumber.RoomName</span></li>
+                </ul>
+                <button type="submit" class="btn_1 full-width purchase">Purchase</button>
+                <div class="text-center">
+                    <small>No money charged in this step</small>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</form>
+
+<!-- /row -->
+</div>
+<!-- /container -->
+</div>
+<!-- /bg_color_1 -->
+
+@section Purchase{
+
+}

@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    string status = "";
+    string statusColor = "";
+    string buttonIcon = "";
+}
+
+@model HotelAndTours.ModelsLayer.Models.HotelComments.HotelCommentCRUDViewModel
+
+
+
+<div class="page-titles">
+    <div class="d-flex align-items-center">
+        <h5 class="font-medium m-b-0">Otel Yorumları</h5>
+        <div class="custom-breadcrumb ml-auto">
+            <a href="/Admin/" class="breadcrumb">Anasayfa</a>
+            <a href="#!" class="breadcrumb">Otel Yorumları</a>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <h5 class="card-title">Yorumlar</h5>
+                    <p></p>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+
+                                    <th>Ad Soyad</th>
+                                    <th>E-Posta</th>
+                                    <th>Yorum</th>
+                                    <th>Otel</th>
+                                    <th style="width:20px;text-align:center">Durum</th>
+
+                                    <th style="width:20px;text-align:center"></th>
+                                    <th style="width:20px;text-align:center"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model._HotelCommentsViewModel)
+                                {
+                                    if (item.Status)
+                                    {
+                                        status = "check";
+                                        statusColor = "green";
+                                        buttonIcon = "close";
+                                    }
+                                    else
+                                    {
+                                        status = "close";
+                                        statusColor = "#E06B55";
+                                        buttonIcon = "check";
+
+                                    }
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.Mail</td>
+                                        <td>@item.Text</td>
+                                        <td>@item.Hotel.HotelName</td>
+                                        <td style="width:20px;text-align:center"><i class="material-icons" style="color:@statusColor">@status</i></td>
+
+                                        <td>
+                                            <a href="/Admin/HotelComments/HotelCommentApprove/@item.CommentId" class="waves-effect waves-light btn-small primary"><i class="material-icons">@buttonIcon</i></a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/HotelComments/HotelCommentDelete/@item.CommentId" class="waves-effect waves-light btn-small delete" style="background-color:#E06B55"><i class="material-icons">delete</i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,236 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/FrontendLayout.cshtml";
+}
+@model List<HotelAndTours.EntityLayer.Concrete.Hotel>?
+
+<section class="hero_in hotels version_3 kenburns_slider">
+    <div class="wrapper">
+        <div class="container">
+            <h1 class="fadeInUp"><span></span>Paris hotels grid sidebar</h1>
+        </div>
+    </div>
+</section>
+<!--/hero_in-->
+
+<div class="filters_listing sticky_horizontal">
+    <div class="container">
+        <ul class="clearfix">
+            <li>
+                @*<div class="switch-field">
+                <input type="radio" id="all" name="listing_filter" value="all" checked data-filter="*" class="selected">
+                <label for="all">All</label>
+                <input type="radio" id="popular" name="listing_filter" value="popular" data-filter=".popular">
+                <label for="popular">Popular</label>
+                <input type="radio" id="latest" name="listing_filter" value="latest" data-filter=".latest">
+                <label for="latest">Latest</label>
+                </div>*@
+            </li>
+            <li>
+                <div class="layout_view">
+                    <a href="#0" class="active">
+                        <i class="icon-th"></i>
+                    </a>
+                    <a href="hotels-list-sidebar.html">
+                        <i class="icon-th-list"></i>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a class="btn_map" data-bs-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap" data-text-swap="Hide map" data-text-original="View on map">View on map</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /filters -->
+
+<div class="collapse" id="collapseMap">
+    <div id="map" class="map"></div>
+</div>
+<!-- End Map -->
+
+
+<div class="container margin_60_35">
+    <form>
+        <div class="row">
+            <aside class="col-lg-3" id="sidebar">
+                <div class="custom-search-input-2 inner-2">
+                    <div class="row">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Aranacak..." name="search">
+                            <i class="icon_search"></i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <select class="wide" name="location">
+                                <option value="Empty">Tüm Şehirler</option>
+
+                                @foreach (var item in ViewBag.CapitalCities)
+                                {
+                                    <option value="@item" @(ViewBag.City == item ? "selected" : "")>@item</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <select class="wide" name="category">
+                                <option value="Empty">Tüm Kategoriler</option>
+                                @foreach (var category in ViewBag.HotelCategory)
+                                {
+                                    <option value="@category.HotelCategoryId" @(ViewBag.Category == category.HotelCategoryId.ToString() ? "selected" : "")>
+                                        @category.HotelCategoryName
+                                        <small>(@category.Hotels.Count)</small>
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn_search" value="Search">
+                </div>
+                <!-- /custom-search-input-2 -->
+                <div id="filters_col">
+                    <a data-bs-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">Filters </a>
+                    <div class="collapse show" id="collapseFilters">
+                        <div class="filter_type">
+                            <h6>Duration</h6>
+                            <input type="text" id="range" name="range" value="">
+                        </div>
+                        <div class="filter_type">
+                            <h6>Rating</h6>
+                            <ul>
+                                <li>
+                                    <label>Superb: 9+</label>
+                                    <input type="checkbox" class="js-switch" checked>
+                                </li>
+                                <li>
+                                    <label>Very good: 8+</label>
+                                    <input type="checkbox" class="js-switch">
+                                </li>
+                                <li>
+                                    <label>Good: 7+</label>
+                                    <input type="checkbox" class="js-switch">
+                                </li>
+                                <li>
+                                    <label>Pleasant: 6+</label>
+                                    <input type="checkbox" class="js-switch">
+                                </li>
+                                <li>
+                                    <label>No rating</label>
+                                    <input type="checkbox" class="js-switch">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--/collapse -->
+                </div>
+                <!--/filters col-->
+            </aside>
+
+            <!-- /aside -->
+
+            <div class="col-lg-9" id="list_sidebar">
+                <div class="isotope-wrapper">
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-6 isotope-item">
+                                <div class="box_grid">
+                                    <figure>
+                                        <a href="#0" class="wish_bt"></a>
+                                        <a href="/Frontend/HotelDetails?hotelId=@item.HotelId">
+                                            <img src="@item.HotelCoverImage" class="img-fluid" alt="" width="800" height="533">
+                                            <div class="read_more">
+                                                <span>Devamı</span>
+                                            </div>
+                                        </a>
+                                        <small>@item.Location</small>
+                                    </figure>
+                                    <div class="wrapper">
+                                        <div class="cat_star">
+                                            <i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                                        </div>
+                                        <h3>
+                                            <a href="/Frontend/HotelDetails?hotelId=@item.HotelId">@item.HotelName</a>
+                                        </h3>
+                                        <p>@(item.Description.Length > 300 ? item.Description.Substring(0, 300) : item.Description)...</p>
+                                        <span class="price">
+
+                                            @if (item.Rooms.OrderBy(x => x.PriceForNightAdult).FirstOrDefault()?.PriceForNightAdult != null)
+                                            {
+                                                <span>Gecelik</span>
+                                                <strong>@(item.Rooms.OrderBy(x => x.PriceForNightAdult).FirstOrDefault()?.PriceForNightAdult)</strong>
+                                                <span>/başlayan fiyatlarla</span>
+                                            }
+                                            else
+                                            {
+                                                <strong>Oda bulunamadı</strong>
+                                            }
+
+                                        </span>
+                                    </div>
+                                    <ul>
+                                        <li><i class="ti-eye"></i> @item.Rooms.Select(x => x.RoomNumbers.Select(x => x.Booking)).Count() adet rezervasyon yapıldı</li>
+                                        <li>
+                                            <div class="score">
+                                                <span>
+                                                    @if (item.HotelComments.Any())
+                                                    {
+                                                        if (item.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 2.9)
+                                                        {
+                                                            <p style="all:unset;">Kötü</p>
+                                                        }
+                                                        else if (item.HotelComments.Where(x => x.Status).Select(x => x.Star).Average() <= 3.9)
+                                                        {
+                                                            <p style="all:unset;">Normal</p>
+                                                        }
+                                                        else if (item.HotelComments.Where(x => x.Status).Select(x => x.Star).Average() <= 4.5)
+                                                        {
+                                                            <p style="all:unset;">İyi</p>
+                                                        }
+                                                        else if (item.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average() <= 5)
+                                                        {
+                                                            <p style="all:unset;">Çok İyi</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p style="all:unset;">-</p>
+                                                        }
+                                                    }
+
+                                                    <em>@item.HotelComments.Where(x=>x.Status).Count() değerlendirme</em>
+                                                </span>
+                                                <strong>
+
+                                                    @if (item.HotelComments.Any())
+                                                    {
+                                                        @item.HotelComments.Where(x=>x.Status).Select(x => x.Star).Average().ToString("0.0")
+                                                    }
+                                                    else
+                                                    {
+                                                        <i>-</i>
+                                                    }
+                                                </strong>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <!-- /row -->
+                </div>
+                <!-- /isotope-wrapper -->
+
+                <p class="text-center">
+                    <a href="#0" class="btn_1 rounded add_top_30">Load more</a>
+                </p>
+            </div>
+            <!-- /col -->
+        </div>
+    </form>
+</div>
+<!-- /container -->

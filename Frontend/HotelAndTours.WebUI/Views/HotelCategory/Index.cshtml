@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+@model HotelAndTours.ModelsLayer.Models.HotelCategory.HotelCategoryCRUDViewModel
+
+<div class="fixed-action-btn">
+    <a href="#AddEdit" class="btn-floating btn-large modal-trigger red" id="addButton">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
+
+<div class="page-titles">
+    <div class="d-flex align-items-center">
+        <h5 class="font-medium m-b-0">Otel Kategorileri</h5>
+        <div class="custom-breadcrumb ml-auto">
+            <a href="/Admin/" class="breadcrumb">Anasayfa</a>
+            <a href="#!" class="breadcrumb">Otel Kategorileri</a>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <h5 class="card-title">Kategori Listesi</h5>
+                    <p></p>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+
+                                    <th>Kategori Adı</th>
+                                    <th>Bağlı Otel Sayısı</th>
+                                   
+                                    <th style="width:20px;text-align:center"></th>
+                                    <th style="width:20px;text-align:center"></th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model._HotelCategoriesViewModel)
+                                {
+
+                                    <tr>
+                                        <td>@item.HotelCategoryName</td>
+                                        <td>@item.Hotels.Count</td>
+                                       
+                                        <td>
+                                            <a href="/Admin/HotelCategory?editId=@item.HotelCategoryId" class="waves-effect waves-light btn-small green"><i class="material-icons">edit</i></a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/HotelCategory/HotelCategoryDelete/@item.HotelCategoryId" class="waves-effect waves-light btn-small delete" style="background-color:#E06B55"><i class="material-icons">delete</i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="AddEdit" class="modal modal-fixed-footer" data-keyboard="false" data-backdrop="static">
+    <form asp-action="HotelCategoryAddEdit" id="Add_Form">
+        <div class="modal-content">
+            <input hidden id="Id" length="120" asp-for="@Model._HotelCategoryAddViewModel.HotelCategoryId" name="HotelCategoryId">
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="Name" type="text" asp-for="@Model._HotelCategoryAddViewModel.HotelCategoryName" name="HotelCategoryName">
+                    <label for="Name">Kategori Adı</label>
+                </div>
+            </div>
+          
+        
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn green waves-effect waves-green ">
+                Gönder
+            </button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn red ">Kapat</a>
+        </div>
+    </form>
+
+</div>

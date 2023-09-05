@@ -1,0 +1,107 @@
+﻿@model HotelAndTours.ModelsLayer.Models.RoomSpecs.RoomSpecsCRUDViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="fixed-action-btn">
+    <a href="#AddEdit" class="btn-floating btn-large modal-trigger red" id="addButton">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
+
+<div class="page-titles">
+    <div class="d-flex align-items-center">
+        <h5 class="font-medium m-b-0">Oda Özellikleri</h5>
+        <div class="custom-breadcrumb ml-auto">
+            <a href="/Admin/" class="breadcrumb">Anasayfa</a>
+            <a href="#!" class="breadcrumb">Oda Özellikleri</a>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <h5 class="card-title">Oda Özellikleri Listesi</h5>
+                    <p></p>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Adı</th>
+                                    <th>Simge</th>
+                                    <th style="width:20px;text-align:center"></th>
+                                    <th style="width:20px;text-align:center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model._RoomSpecsViewModel)
+                                {
+                                    <tr>
+                                        <td>@item.RoomSpec</td>
+                                        <td>
+                                            <i class="material-icons">@item.Icon</i>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/RoomSpecs?editId=@item.Id" class="waves-effect waves-light btn-small green">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/RoomSpecs/RoomSpecsDelete/@item.Id" class="waves-effect waves-light btn-small delete" style="background-color:#E06B55">
+                                                <i class="material-icons">delete</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="AddEdit" class="modal modal-fixed-footer" data-keyboard="false" data-backdrop="static">
+    <form asp-action="AddEdit" id="Add_Form">
+        <div class="modal-content">
+            <input hidden id="Id" length="120" asp-for="@Model._RoomSpecsAddViewModel.Id" name="Id">
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="RoomSpec" type="text" asp-for="@Model._RoomSpecsAddViewModel.RoomSpec" name="RoomSpec">
+                    <label for="RoomSpec">Özellik Adı</label>
+                    <span asp-validation-for="@Model._RoomSpecsAddViewModel.RoomSpec" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="icon-select" type="text" asp-for="@Model._RoomSpecsAddViewModel.Icon" name="Icon">
+
+                    <label for="icon-select">Simge</label>
+                    <span asp-validation-for="@Model._RoomSpecsAddViewModel.Icon" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn green waves-effect waves-green">
+                Gönder
+            </button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn red">Kapat</a>
+        </div>
+    </form>
+</div>
+
+@section RoomSpecs {
+
+}

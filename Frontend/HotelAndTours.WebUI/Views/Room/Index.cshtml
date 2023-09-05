@@ -1,0 +1,218 @@
+﻿@using Microsoft.EntityFrameworkCore
+@model HotelAndTours.ModelsLayer.Models.Room.RoomCRUDViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var count = 0; // Counter variable
+
+}
+
+<div class="fixed-action-btn">
+    <a href="#AddEdit" class="btn-floating btn-large modal-trigger red" id="addButton">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
+
+<div class="page-titles">
+    <div class="d-flex align-items-center">
+        <h5 class="font-medium m-b-0">Odalar</h5>
+        <div class="custom-breadcrumb ml-auto">
+            <a href="/Admin/" class="breadcrumb">Anasayfa</a>
+            <a href="/#!" class="breadcrumb">Odalar</a>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <h5 class="card-title">Odaların Listesi</h5>
+                    <p></p>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                            <tr>
+
+                                <th>Oda Adı</th>
+                                <th>Otel Adı</th>
+                                <th>Oda Açıklaması</th>
+                                <th>Odanın Özellikleri</th>
+                                <th>Gecelik Yetişkin Fiyat</th>
+                                <th>Gecelik Çocuk Fiyat</th>
+
+                                <th style="width:20px;text-align:center"></th>
+                                <th style="width:20px;text-align:center"></th>
+
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            @foreach (var item in Model._RoomViewModel)
+                            {
+                                <tr>
+                                    <td>@item.Title</td>
+                                    <td>@item.Hotel.HotelName</td>
+                                    <td>@(item.Description.Length > 30 ? item.Description.Substring(0, 30) : item.Description)...</td>
+                                        <td class="tooltipped" data-position="bottom" data-delay="50" data-tooltip=" @foreach (var spec in item.RoomSpecs)
+                                        {
+                                            <p>@spec.RoomSpecs.RoomSpec</p>
+                                        }">
+                                        @foreach (var spec in item.RoomSpecs)
+                                        {
+                                           
+                                                <p>
+                                                    <i class="material-icons">@spec.RoomSpecs.Icon</i> <span>@spec.RoomSpecs.RoomSpec</span>
+                                                </p>
+                                             
+                                        }
+                                    </td>
+
+                                    <td>@item.PriceForNightAdult</td>
+                                    <td>@item.PriceForNightChildren</td>
+                                    <td>
+                                        <a href="/Admin/Room?editId=@item.RoomId" class="waves-effect waves-light btn-small green">
+                                            <i class="material-icons">edit</i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/Admin/Room/RoomDelete/@item.RoomId" class="waves-effect waves-light btn-small delete" style="background-color:#E06B55">
+                                            <i class="material-icons">delete</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="AddEdit" class="modal modal-fixed-footer" data-keyboard="false" data-backdrop="static">
+    <form asp-action="RoomAddEdit" id="Add_Form" enctype="multipart/form-data">
+        <div class="modal-content">
+            <input hidden id="Id" length="120" asp-for="@Model._RoomAddViewModel.RoomId" name="RoomId">
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="Title" type="text" asp-for="@Model._RoomAddViewModel.Title" name="Title">
+                    <label for="Title">Oda Adı</label>
+                    <span asp-validation-for="@Model._RoomAddViewModel.Title" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="HotelId" class="form-control" asp-for="@Model._RoomAddViewModel.HotelId" name="HotelId">
+                        @foreach (var item in ViewBag.DropDownList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <label for="Title">Otel Adı</label>
+                    <span asp-validation-for="@Model._RoomAddViewModel.HotelId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="Description" class="materialize-textarea" asp-for="@Model._RoomAddViewModel.Description" name="Description"></textarea>
+
+                    <label for="Description">Açıklama</label>
+                    <span asp-validation-for="@Model._RoomAddViewModel.Description" class="text-danger"></span>
+                </div>
+            </div>
+            @*asp-for="@Model._RoomAddViewModel.RoomSpecsId"*@
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="RoomSpecsId" class="form-control" multiple required>
+                      
+                            @foreach (var item in ViewBag.roomSpecsDropDownList)
+                            {
+                            @if (Model._RoomAddViewModel != null)
+                            {
+                                <option value="@item.Value" selected="@(Model._RoomAddViewModel.RoomSpecsId.Contains(item.Value) ? "selected" : null)">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+
+                            }
+                        }
+                    </select>
+                    <label for="RoomSpecsId">Odanın Özellikleri</label>
+                    <input type="hidden" id="selectedValuesInput" asp-for="_RoomAddViewModel.RoomSpecsId" name="RoomSpecsId">
+                    <span asp-validation-for="@Model._RoomAddViewModel.RoomSpecsId" class="text-danger"></span>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <div class="file-field input-field">
+                        <div class="btn blue darken-1">
+                            <span>Fotoğraf</span>
+                            <input type="file" name="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="PriceForNightAdult" type="text" asp-for="@Model._RoomAddViewModel.PriceForNightAdult" name="PriceForNightAdult">
+                    <label for="PriceForNightAdult">Gecelik Yetişkin Fiyat</label>
+                    <span asp-validation-for="@Model._RoomAddViewModel.PriceForNightAdult" class="text-danger"></span>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="PriceForNightChildren" type="text" asp-for="@Model._RoomAddViewModel.PriceForNightChildren" name="PriceForNightChildren">
+                    <label for="PriceForNightChildren">Gecelik Çocuk Fiyat</label>
+                    <span asp-validation-for="@Model._RoomAddViewModel.PriceForNightChildren" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div asp-validation-summary="ModelOnly">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn green waves-effect waves-green ">
+                Gönder
+            </button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn red ">Kapat</a>
+        </div>
+    </form>
+
+</div>
+
+@section Room {
+
+    <script>
+
+    $(document).ready(function () {
+        // Listen for changes in the select element
+        $('#RoomSpecsId').change(function () {
+            var selectedValues = $(this).val();
+            var selectedTexts = [];
+
+            // Get the text for each selected option
+            $(this).find('option:selected').each(function () {
+                selectedTexts.push($(this).text());
+            });
+
+            // Update the displayed text
+            $('#selectedValuesText').text(selectedTexts.join(', '));
+
+            // Update the hidden input field with the selected values
+            $('#selectedValuesInput').val(selectedValues);
+        });
+    });
+
+    </script>
+}
